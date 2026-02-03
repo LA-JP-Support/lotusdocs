@@ -41,16 +41,16 @@
         {{ $darkModeInit := resources.Get (printf "/%s/%s" ($.Scratch.Get "pathName") "js/darkmode-init.js") | js.Build | minify -}}
         <script>{{ $darkModeInit.Content | safeJS }}</script>
     {{ end -}}
-    <!-- FlexSearch -->
+    <!-- FlexSearch - deferred to prevent render blocking -->
     {{ if or (not (isset .Site.Params.flexsearch "enabled")) (eq .Site.Params.flexsearch.enabled true) -}}
         {{ if and (.Site.Params.docsearch.appID) (.Site.Params.docsearch.apiKey) -}}
         {{ else }}
             {{ $flexSearch := resources.Get (printf "/%s/%s" ($.Scratch.Get "pathName") "js/flexsearch.bundle.js") }}
             {{- if not hugo.IsServer }}
                 {{ $flexSearch := $flexSearch | minify | fingerprint "sha384" }}
-                <script type="text/javascript" src="{{ $flexSearch.Permalink }}" integrity="{{ $flexSearch.Data.Integrity }}" crossorigin="anonymous"></script>
+                <script type="text/javascript" src="{{ $flexSearch.Permalink }}" integrity="{{ $flexSearch.Data.Integrity }}" crossorigin="anonymous" defer></script>
                 {{ else }}
-                <script type="text/javascript" src="{{ $flexSearch.Permalink }}"></script>
+                <script type="text/javascript" src="{{ $flexSearch.Permalink }}" defer></script>
             {{ end }}
         {{ end }}
     {{ end }}
