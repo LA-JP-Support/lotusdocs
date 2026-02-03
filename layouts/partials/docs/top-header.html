@@ -81,7 +81,7 @@
             {{ if hugo.IsMultilingual }}
                 <div class="dropdown">
                     <button class="btn btn-link btn-default dropdown-toggle ps-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ site.Language.Lang | upper }}
+                        {{ site.Language.LanguageName }}
                     </button>
                     <ul class="dropdown-menu text-end">
                         {{ partial (printf "%s/%s" ($.Scratch.Get "pathName") "i18nlist") . }}
